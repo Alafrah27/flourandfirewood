@@ -77,27 +77,27 @@ export default function Navbar() {
             {/* Mobile Navigation Dropdown */}
             <div className={`absolute top-[65px] left-0 w-full bg-slate-950 border-b border-white/10 md:hidden flex flex-col px-6 py-6 space-y-6 transition-all duration-300 ease-in-out z-40 transform ${mobileMenuOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-4 invisible"}`}>
                 <div className="flex flex-col space-y-4">
-                    <a
-                        href="#home"
+                    <Link
+                        href="/"
                         onClick={() => setMobileMenuOpen(false)}
                         className="text-slate-300 hover:text-[#A2A657] font-medium text-base transition-colors"
                     >
                         Home
-                    </a>
-                    <a
-                        href="#menu"
+                    </Link>
+                    <Link
+                        href="/menu"
                         onClick={() => setMobileMenuOpen(false)}
                         className="text-slate-300 hover:text-[#A2A657] font-medium text-base transition-colors"
                     >
                         Menu
-                    </a>
-                    <a
-                        href="#booking"
+                    </Link>
+                    <Link
+                        href="/booking"
                         onClick={() => setMobileMenuOpen(false)}
                         className="text-slate-300 hover:text-[#A2A657] font-medium text-base transition-colors"
                     >
                         Booking
-                    </a>
+                    </Link>
                     <Link
                         href="/myorder"
                         onClick={() => setMobileMenuOpen(false)}
