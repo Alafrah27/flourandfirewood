@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Heart, ShoppingCart, Menu, X } from "lucide-react";
-import { Show, SignInButton, UserButton, useAuth } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, UserButton, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { useGetCart } from "../services/cartQuery";
 
@@ -45,16 +45,16 @@ export default function Navbar() {
 
                     <div className="h-4 w-px bg-white/15" />
 
-                    <Show when="signed-out">
+                    <SignedOut>
                         <SignInButton mode="modal">
                             <button className="px-5 py-2 rounded-xl text-sm font-semibold tracking-tight bg-[#41431B] hover:bg-[#515422] text-white cursor-pointer shadow-md shadow-amber-500/10 transition-all duration-300 hover:scale-[1.02]">
                                 Sign In
                             </button>
                         </SignInButton>
-                    </Show>
-                    <Show when="signed-in">
+                    </SignedOut>
+                    <SignedIn>
                         <UserButton />
-                    </Show>
+                    </SignedIn>
                 </div>
 
                 {/* Mobile Menu Button (Hamburger) */}
@@ -115,16 +115,16 @@ export default function Navbar() {
                         <Heart size={20} className="text-slate-300 cursor-pointer hover:text-[#A2A657] transition-colors" />
                     </div>
 
-                    <Show when="signed-out">
+                    <SignedOut>
                         <SignInButton mode="modal">
                             <button className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-[#41431B] hover:bg-[#515422] text-white transition-colors">
                                 Sign In
                             </button>
                         </SignInButton>
-                    </Show>
-                    <Show when="signed-in">
+                    </SignedOut>
+                    <SignedIn>
                         <UserButton />
-                    </Show>
+                    </SignedIn>
                 </div>
             </div>
         </header>
