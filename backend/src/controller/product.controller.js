@@ -156,7 +156,6 @@ export const deleteProduct = async (req, res) => {
     const { id } = req.params;
     const deletedProduct = await Product.findOneAndDelete({
       _id: id,
-      userId: user._id,
     });
 
     if (!deletedProduct) {
@@ -225,7 +224,6 @@ export const updateProduct = async (req, res) => {
     // Fetch existing product to compare images before updating
     const existingProduct = await Product.findOne({
       _id: id,
-      userId: user._id,
     });
     if (!existingProduct) {
       return res
@@ -269,7 +267,7 @@ export const updateProduct = async (req, res) => {
     }
 
     const updatedProduct = await Product.findOneAndUpdate(
-      { _id: id, userId: user._id },
+      { _id: id },
       {
         productName,
         productPrice: Number(productPrice),
