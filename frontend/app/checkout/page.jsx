@@ -21,6 +21,10 @@ export default function CheckoutPage() {
   const [moyasarLoaded, setMoyasarLoaded] = useState(false);
   const moyasarInitialized = useRef(false);
 
+  // Check if opened from mobile app
+  const searchParams = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
+  const isMobile = searchParams.get("source") === "mobile";
+
   const subtotal = cart?.totalPrice || 0;
 
   // Redirect if not signed in
@@ -97,7 +101,7 @@ export default function CheckoutPage() {
         currency: "SAR",
         description: `Restaurant Order - ${cart.products.length} item(s)`,
         publishable_api_key: apiKey,
-        callback_url: `${window.location.origin}/payment-success`,
+        callback_url: `${window.location.origin}/payment-success${isMobile ? "?source=mobile" : ""}`,
         methods: ["creditcard", "stcpay"],
         supported_networks: ["mada", "visa", "mastercard"],
       });

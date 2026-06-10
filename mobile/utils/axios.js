@@ -1,6 +1,5 @@
 import { create } from "axios";
 
-
 const Instance = create({
   baseURL: process.env.EXPO_PUBLIC_API_ENDPOINT,
   headers: {

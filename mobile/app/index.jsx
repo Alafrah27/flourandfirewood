@@ -3,13 +3,15 @@ import { AuthView } from '@clerk/expo/native'
 import { Redirect } from 'expo-router'
 import { View,  StyleSheet, ActivityIndicator } from 'react-native'
 
+
 export default function MainScreen() {
   const { isSignedIn, isLoaded } = useAuth({ treatPendingAsSignedOut: false })
 
   if (!isLoaded) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#41431B" />
+        
+        <ActivityIndicator color={"#41431B"} size={"large"} />
       </View>
     )
   }
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: 'white', 
     padding: 40,
   },
 })

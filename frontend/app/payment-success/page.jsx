@@ -27,6 +27,7 @@ export default function PaymentSuccessPage() {
 
   const paymentId = searchParams.get("id");
   const paymentStatus = searchParams.get("status");
+  const isMobile = searchParams.get("source") === "mobile";
 
   useEffect(() => {
     if (!isAuthLoaded || !isSignedIn || verifyAttempted.current) return;
@@ -56,6 +57,12 @@ export default function PaymentSuccessPage() {
         const result = await verifyPayment(paymentId);
         setOrderData(result.order);
         setStatus("success");
+
+        // If opened from mobile app, redirect back to Expo via deep link
+        if (isMobile && result.order?._id) {
+          window.location.href = `flourandfirewood://payment-success?orderId=${result.order._id}`;
+          return;
+        }
       } catch (err) {
         setStatus("failed");
         setErrorMessage(
@@ -65,7 +72,7 @@ export default function PaymentSuccessPage() {
     };
 
     verify();
-  }, [isAuthLoaded, isSignedIn, paymentId, paymentStatus, verifyPayment]);
+  }, [isAuthLoaded, isSignedIn, paymentId, paymentStatus, verifyPayment, isMobile]);
 
   // ─── Loading ──────────────────────────────────────────────────────────────────
   if (!isAuthLoaded || status === "loading") {
