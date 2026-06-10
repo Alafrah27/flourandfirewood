@@ -2,14 +2,18 @@ import { useUser } from '@clerk/expo';
 import { Ionicons } from '@expo/vector-icons';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useGetCartForMobile } from '../services/cartQuery';
 
 const Navbar = () => {
     const router = useRouter();
     const { isLoaded, isSignedIn, user } = useUser();
+    const { data: cart } = useGetCartForMobile();
 
     // Fallback names and image
     const userName = isLoaded && isSignedIn && user ? (user.fullName || user.firstName || 'Guest') : 'Guest';
     const userImage = isLoaded && isSignedIn && user ? user.imageUrl : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=120';
+
+    const cartCount = cart?.products?.reduce((acc, item) => acc + item.quantity, 0) || 0;
 
     return (
 
@@ -31,9 +35,11 @@ const Navbar = () => {
             {/* Cart Icon Container */}
             <TouchableOpacity onPress={() => router.push('/cart')} className='relative bg-primary p-2.5 rounded-full'>
                 <Ionicons name='cart' size={20} color='#fff' />
-                <View className='absolute -top-1 -right-1 bg-red-500 rounded-full w-5 h-5 items-center justify-center border border-white'>
-                    <Text className='text-xs text-white font-poppins'>0</Text>
-                </View>
+                {cartCount > 0 && (
+                    <View className='absolute -top-1 -right-1 bg-red-500 rounded-full w-5 h-5 items-center justify-center border border-white'>
+                        <Text className='text-[10px] text-white font-poppins-bold'>{cartCount}</Text>
+                    </View>
+                )}
             </TouchableOpacity>
         </View>
 
