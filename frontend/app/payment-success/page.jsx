@@ -32,20 +32,28 @@ export default function PaymentSuccessPage() {
   useEffect(() => {
     if (!isAuthLoaded || !isSignedIn || verifyAttempted.current) return;
 
+    // Read stored mobile redirect URL and checkout flag
+    const savedRedirectUrl = typeof window !== "undefined" ? sessionStorage.getItem("mobile_redirect_url") : null;
+    const savedIsMobile = typeof window !== "undefined" ? sessionStorage.getItem("is_mobile_checkout") === "true" : false;
+
     // If Moyasar says it failed on the redirect, show failure immediately
     if (paymentStatus && paymentStatus !== "paid") {
-      setStatus("failed");
-      setErrorMessage(
-        paymentStatus === "failed"
-          ? "Your payment was declined. Please try again."
-          : `Payment status: ${paymentStatus}`,
-      );
+      setTimeout(() => {
+        setStatus("failed");
+        setErrorMessage(
+          paymentStatus === "failed"
+            ? "Your payment was declined. Please try again."
+            : `Payment status: ${paymentStatus}`,
+        );
+      }, 0);
       return;
     }
 
     if (!paymentId) {
-      setStatus("error");
-      setErrorMessage("No payment ID found. Please return to your cart.");
+      setTimeout(() => {
+        setStatus("error");
+        setErrorMessage("No payment ID found. Please return to your cart.");
+      }, 0);
       return;
     }
 
@@ -58,8 +66,19 @@ export default function PaymentSuccessPage() {
         setOrderData(result.order);
         setStatus("success");
 
-        // If opened from mobile app, redirect back to Expo via deep link
-        if (isMobile && result.order?._id) {
+        // Clean up sessionStorage
+        if (typeof window !== "undefined") {
+          sessionStorage.removeItem("mobile_redirect_url");
+          sessionStorage.removeItem("is_mobile_checkout");
+        }
+
+        // Redirect back to Expo app via the dynamic redirect URL (or fallback)
+        if (savedRedirectUrl && result.order?._id) {
+          window.location.href = `${savedRedirectUrl}?orderId=${result.order._id}`;
+          return;
+        }
+
+        if ((isMobile || savedIsMobile) && result.order?._id) {
           window.location.href = `flourandfirewood://payment-success?orderId=${result.order._id}`;
           return;
         }
