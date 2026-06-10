@@ -11,7 +11,6 @@ import {
 } from '../../services/cartQuery';
 import { useAuth } from '@clerk/expo';
 import CartItem from '../../components/CartItem';
-import PaymentButton from '../../components/PaymentButton';
 
 const Cart = () => {
     const { isSignedIn } = useAuth();
@@ -90,9 +89,7 @@ const Cart = () => {
                             <Text className="text-sm font-poppins-medium text-slate-500">Delivery Fee </Text>
                             <Text className="text-sm font-poppins-medium text-primary">free</Text>
                         </View>
-                        <View className="my-5">
-                            <PaymentButton />
-                        </View>
+
                     </View>
                 ) : null}
                 ListEmptyComponent={<EmptyCart />}

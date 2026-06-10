@@ -21,22 +21,7 @@ export default function CheckoutPage() {
   const [moyasarLoaded, setMoyasarLoaded] = useState(false);
   const moyasarInitialized = useRef(false);
 
-  // Check if opened from mobile app
-  const searchParams = React.useMemo(() => new URLSearchParams(typeof window !== "undefined" ? window.location.search : ""), []);
-  const isMobile = searchParams.get("source") === "mobile";
 
-  // Save mobile context to sessionStorage to survive Moyasar's redirect
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const redirectUrl = searchParams.get("redirect_url");
-      if (redirectUrl) {
-        sessionStorage.setItem("mobile_redirect_url", redirectUrl);
-      }
-      if (isMobile) {
-        sessionStorage.setItem("is_mobile_checkout", "true");
-      }
-    }
-  }, [isMobile, searchParams]);
 
   const subtotal = cart?.totalPrice || 0;
 
