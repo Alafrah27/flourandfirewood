@@ -33,7 +33,7 @@ export const usePayment = () => {
 
             // Open the Next.js checkout page in an in-app auth session browser
             const result = await WebBrowser.openAuthSessionAsync(
-                `${FRONTEND_URL}/checkout?source=mobile`,
+                `${FRONTEND_URL}/checkout?source=mobile&redirect_url=${encodeURIComponent(redirectUrl)}`,
                 redirectUrl
             );
 
