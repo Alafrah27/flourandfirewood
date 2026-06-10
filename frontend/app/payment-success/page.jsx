@@ -27,14 +27,9 @@ export default function PaymentSuccessPage() {
 
   const paymentId = searchParams.get("id");
   const paymentStatus = searchParams.get("status");
-  const isMobile = searchParams.get("source") === "mobile";
 
   useEffect(() => {
     if (!isAuthLoaded || !isSignedIn || verifyAttempted.current) return;
-
-    // Read stored mobile redirect URL and checkout flag
-    const savedRedirectUrl = typeof window !== "undefined" ? sessionStorage.getItem("mobile_redirect_url") : null;
-    const savedIsMobile = typeof window !== "undefined" ? sessionStorage.getItem("is_mobile_checkout") === "true" : false;
 
     // If Moyasar says it failed on the redirect, show failure immediately
     if (paymentStatus && paymentStatus !== "paid") {
@@ -66,22 +61,7 @@ export default function PaymentSuccessPage() {
         setOrderData(result.order);
         setStatus("success");
 
-        // Clean up sessionStorage
-        if (typeof window !== "undefined") {
-          sessionStorage.removeItem("mobile_redirect_url");
-          sessionStorage.removeItem("is_mobile_checkout");
-        }
 
-        // Redirect back to Expo app via the dynamic redirect URL (or fallback)
-        if (savedRedirectUrl && result.order?._id) {
-          window.location.href = `${savedRedirectUrl}?orderId=${result.order._id}`;
-          return;
-        }
-
-        if ((isMobile || savedIsMobile) && result.order?._id) {
-          window.location.href = `flourandfirewood://payment-success?orderId=${result.order._id}`;
-          return;
-        }
       } catch (err) {
         setStatus("failed");
         setErrorMessage(
@@ -91,7 +71,7 @@ export default function PaymentSuccessPage() {
     };
 
     verify();
-  }, [isAuthLoaded, isSignedIn, paymentId, paymentStatus, verifyPayment, isMobile]);
+  }, [isAuthLoaded, isSignedIn, paymentId, paymentStatus, verifyPayment]);
 
   // ─── Loading ──────────────────────────────────────────────────────────────────
   if (!isAuthLoaded || status === "loading") {
